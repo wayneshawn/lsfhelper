@@ -1,0 +1,6 @@
+/usr/local/lib/python2.7/dist-packages/cassandra/util.py:486: UserWarning: The blist library is not available, so a pure python list-based set will be used in place of blist.sortedset for set collection values. You can find the blist library here: https://pypi.python.org/pypi/blist/
+  "The blist library is not available, so a pure python list-based set will "
+127.0.0.1:57585 - - [19/May/2015 14:45:17] "HTTP/1.1 GET /" - 404 Not Found
+127.0.0.1:57585 - - [19/May/2015 14:45:18] "HTTP/1.1 GET /favicon.ico" - 404 Not Found
+127.0.0.1:57585 - - [19/May/2015 14:45:21] "HTTP/1.1 GET /pcm7min" - 200 OK
+http://0.0.0.0:8080/
