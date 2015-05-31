@@ -5,7 +5,7 @@ class formatter():
 
 	p_jstart = re.compile(r'\"JOB_START\"\s\"8.0\"\s([^\s]+)\s([^\s]+)\s([^\s]+)\s([^\s]+)\s([^\s]+)\s([^\s]+)\s([^\s]+)\s((?:\"c\d\db\d\d\"\s)*)\"(.*)\"\s\"(.*)\"\s(\d+)\s\"(.*)\"\s(\d+)\s\"(.*)\"\s\d+\s\d+')
 	p_jstartac = re.compile(r'\"JOB_START_ACCEPT\"\s\"8.0\"\s(\d+)\s(\d+)\s(\d+)\s(\d+)\s(\d+)')   
-	#0-eventtime 1-job_id 2-jstatus 3-jobpgid 4-execcwd-s 5-execHome-s
+	#0-eventtime 1-job_id 2-execUid 3-jobpgid 4-execcwd-s 5-execHome-s
 	#6-execUsername-s 7-jobpid 8-idx 9-addinfo 10-sla 11-dura4bkill
 	p_jexec = re.compile(r'\"JOB_EXECUTE\"\s\"8.0\"\s(\d+)\s(\d+)\s(\d+)\s(\d+)\s\"(.*)\"\s\"(.*)\"\s\"([^\s]+)\"\s(\d+)\s(\d+)\s\"(.*)\"\s([^\s]+)\s\".*\"\s[^\s]+\s(\d+)')
 	p_jstatus = re.compile(r'\"JOB_STATUS\"\s\"8.0\"\s(\d+)\s(\d+)\s(\d+)\s(\d+)\s(?P<subreasons>\d+)\s([\d\.]+)\s(\d+)\s(\d)\s((?:(?:[\d\.\-]+\s){19}))?(\d+)\s(\d+)\s(\d+)\s(\d+)')

@@ -47,7 +47,8 @@ for i in range(jobid_start, jobid_end):
     
     et, st, bt, tt  = res_jnew[0] 
     et_jc, = res_jclean[0]
-    f.write("%d\t%d\t%d\t%d\t%d\t%d\n" % (et, st, bt, tt, et_jc, et_jc-et))
+    #f.write("%d\t%d\t%d\t%d\t%d\t%d\n" % (et, st, bt, tt, et_jc, et_jc-et))
+    f.write("%d\t%d\t%d\n" % (et, et_jc, et_jc-et))
     
 f.close()
 

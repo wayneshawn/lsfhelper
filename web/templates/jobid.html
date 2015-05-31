@@ -1,0 +1,12 @@
+$def with (row)
+
+$if row:
+    <table border="1">
+    $for k,v in row.items():
+	<tr>
+	    <td>$k</td>
+	    <td>$v</td>
+   	</tr>
+    </table>
+$else:
+    <em>Hello</em>, world!

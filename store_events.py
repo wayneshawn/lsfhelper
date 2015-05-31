@@ -8,7 +8,7 @@ import time
 etype_to_num = {'"JOB_NEW"':0, '"JOB_START"':1, '"JOB_START_ACCEPT"':2, '"JOB_EXECUTE"':3,
 '"JOB_STATUS"':4, '"JOB_MOVE"':5, '"JOB_SIGNAL"':6, '"JOB_CLEAN"':7, '"JOB_FINISH"':8}
 
-def r_events_file(infile, fmt, db): 
+def r_events_file(infile, fmt, db, begin_time=0, end_time=0): 
 	f = open(infile, 'r')
 	print infile
 	dict_type_num = {}
@@ -18,29 +18,35 @@ def r_events_file(infile, fmt, db):
 			#continue
 			strs = fmt.split(0, line)
 		elif event_type == '"JOB_START"':
-			#continue
+			continue
 			strs = fmt.split(1, line)
 		elif event_type == '"JOB_START_ACCEPT"':
-			#continue
+			continue
 			strs = fmt.split(2, line)
 		elif event_type == '"JOB_EXECUTE"':
 			#continue
 			strs = fmt.split(3, line)
 		elif event_type == '"JOB_STATUS"':
-			#continue
+			continue
 			strs = fmt.split(4, line)
 		elif event_type == '"JOB_MOVE"':
-			#continue
+			continue
 			strs = fmt.split(5, line)
 		elif event_type == '"JOB_SIGNAL"':
-			#continue
+			continue
 			strs = fmt.split(6, line)
 		elif event_type == '"JOB_CLEAN"':
-			#continue
+			continue
 			strs = fmt.split(7, line)
 		elif event_type == '"JOB_FINISH"':
 			#continue
 			strs = fmt.split(8, line)
+			tm = int(strs[0])
+			if begin_time>0 and tm<begin_time:
+			    continue
+			if end_time>0 and tm>end_time:
+			    print 'event_time %d exceed end_time %d return' % (tm, end_time) 
+			    break
 		else:
 			continue
 
@@ -69,7 +75,8 @@ def r_events_files(infiles):
 	tt_dict_type_num = {}
 
 	for f in infiles:
-		d_t_n = r_events_file(f, fmt, db)
+		#Apr.1-May.2
+		d_t_n = r_events_file(f, fmt, db, 1427817600, 1430536956)
 		for etype, num in d_t_n.items():
 			#print etype, num
 			if etype not in tt_dict_type_num.keys():
@@ -83,15 +90,16 @@ def r_events_files(infiles):
 
 if __name__ == '__main__':
 	files = []
-	'''
-	fdir = './logsample/logdir'
+
+	"""
+	fdir = '../logdir'
 	for f in os.listdir(fdir):
-	if fnmatch.fnmatch(f, 'lsb.events.*'):
-	files.append(fdir+'/'+f)
-	'''
+	    if fnmatch.fnmatch(f, 'lsb.events.*'):
+		files.append(fdir+'/'+f)
+	"""
 	#for i in range(1,10):
 	#	files.append('./logdir/lsb.events.'+str(i))
-	files.append('./logdir/lsb.acct')
+	files.append('../logdir/lsb.acct')
 
 	t1 = time.time()
 

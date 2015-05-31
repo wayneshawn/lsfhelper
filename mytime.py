@@ -14,39 +14,24 @@ def to_time_stamp(strs):
 def stamp_to_time(stamp):
 	return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(stamp))
 
+def stamp_round_day(stamp):
+  datetime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(stamp))
+  return
+
+
 if __name__ == '__main__':
-	e = ['Mar', '31', '20:51:03', '2014']
+	e = ['Apr', '1', '0:0:0', '2015']
 	print '%-25s' % '-'.join(e), 
 	print to_time_stamp(e)
 	
-	e = ['Apr', '17', '19:00:00', '2015']
+	e = ['May', '1', '0:0:0', '2015']
 	print '%-25s' % '-'.join(e), 
 	print to_time_stamp(e)
  	
-	print 'JOB_NEW-----------'
-	#jobid 4744111
-	t = 1431058037
-	print '%-25d' % t, stamp_to_time(t)
-	#jobid 4755291
-	t = 1431436974
-	print '%-25d' % t, stamp_to_time(t)
 
-	print 'JOB_FINISH-----------'
-	#jobid 4600863
-	t = 1427700451
+	#lsb.events.123
+	t = 1427817369
 	print '%-25d' % t, stamp_to_time(t)
-
-	#jobid 4669268
-	t = 1428840953
+	#lsb.events.35
+	t = 1430536956
 	print '%-25d' % t, stamp_to_time(t)
-	int_max = 2**31-1
-	print '%-25d' % int_max, stamp_to_time(int_max)
-
-	e = ['May', '18', '9:00:00', '2015']
-	print '%-25s' % '-'.join(e), 
-	print to_time_stamp(e)
-	e = ['May', '18', '9:05:00', '2015']
-	print '%-25s' % '-'.join(e), 
-	print to_time_stamp(e)
-
-	

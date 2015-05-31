@@ -1,0 +1,126 @@
+$def with (d)
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <title>pcm</title>
+</head>
+<body>
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="main" style="height:400px"></div>
+    <!-- ECharts单文件引入 -->
+    <script src="http://echarts.baidu.com/build/dist/echarts.js"></script>
+    <script type="text/javascript">
+        // 路径配置
+        require.config({
+            paths: {
+                echarts: 'http://echarts.baidu.com/build/dist'
+            }
+        });
+        
+        // 使用
+        require(
+            [
+                'echarts',
+                'echarts/chart/eventRiver'
+            ],
+            function (ec) {
+                // 基于准备好的dom，初始化echarts图表
+                var myChart = ec.init(document.getElementById('main')); 
+                option = {
+		    title : {
+			text: 'Most Recent 50 Finished Jobs',
+			subtext: ''
+		    },
+		    tooltip : {
+			trigger: 'item',
+			enterable: true
+		    },
+		    legend: {
+			data:['EXIT', 'DONE']
+		    },
+		    toolbox: {
+			show : true,
+			feature : {
+			    mark : {show: true},
+			    dataZoom : {show: true},
+			    restore : {show: true},
+			    saveAsImage : {show: true}
+			}
+		    },
+
+		    xAxis : [
+			{
+			    type : 'time',
+			    boundaryGap: [0.05,0.1]
+			}
+		    ],
+		    series : [
+			
+		    ]
+		};
+                  
+		//增加一些数据	
+		job_done = {
+			    "name": "DONE", 
+			    "type": "eventRiver", 
+			    "weight": 123, 
+			    "data": [
+			    ]
+		};
+		for(var i=0; i< $len(d['job_done']['jobids']); i++){
+		    var jobid = ($d['job_done']['jobids'])[i];
+		    job_done.data.push({
+			    "name": "",
+			    "weight": 28, 
+			    "evolution": [
+				{
+				    "time": ($:d['job_done']['etimes'])[i], 
+				    "value": 14, 
+				    "detail": {
+					"link": "./jobid/"+jobid, 
+					//"text": "jobId "+($:d['job_done']['jobids'])[i],
+					"text": "jobId "+jobid,
+				    }
+				}
+			    ]
+		    });
+		    
+		}
+		var a = job_done.data;
+		option.series.push(job_done);
+
+		//job_exit
+		job_exit = {
+			    "name": "EXIT", 
+			    "type": "eventRiver", 
+			    "weight": 123, 
+			    "data": [
+			    ]
+		};
+		for(var i=0; i< $len(d['job_exit']['jobids']); i++){
+		    job_exit.data.push({
+			    "name": "",
+			    "weight": 40, 
+			    "evolution": [
+				{
+				    "time": ($:d['job_exit']['etimes'])[i], 
+				    "value": 14, 
+				    "detail": {
+					"link": "./jobid/"+jobid, 
+					"text": "jobId "+($:d['job_exit']['jobids'])[i],
+				    }
+				}
+			    ]
+		    });
+		    
+		}
+		var a = job_done.data;
+		option.series.push(job_exit);
+	  
+		option.color = ['red','green'];
+                // 为echarts对象加载数据 
+                myChart.setOption(option); 
+            }
+        );
+    </script>
+</body>

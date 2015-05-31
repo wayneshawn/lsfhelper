@@ -21,7 +21,7 @@ class inserter():
 	def __init__(self):
 		self.cluster = Cluster()
 		self.session = self.cluster.connect()
-		self.session.set_keyspace('lsflog2')
+		self.session.set_keyspace('lsflog')
 		self.stmt_jnew = self.session.prepare('INSERT INTO jnewlog(event_time, job_id, user_id, num_processors, submit_time, begin_time, term_time, user_name, rl_cpu_time, rl_file_size, rl_dseg_size, rl_sseg_size, rl_cfile_size, rl_mem_size, rl_run_time, queue, num_askedhosts, askedhosts, command) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)')
 		self.stmt_jstart = self.session.prepare('INSERT INTO jstartlog(event_time, job_id, jstatus, job_pid, job_pgid, host_factor, num_exechosts, exechosts, jflags, user_group, idx, add_info) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)')
 		self.stmt_jstart_ac = self.session.prepare('INSERT INTO jstartaclog(event_time, job_id, job_pid, job_pgid, idx) VALUES(?, ?, ?, ?, ?)')
@@ -184,7 +184,7 @@ class errlogInserter():
 	def __init__(self):
 		self.cluster = Cluster()
 		self.session = self.cluster.connect()
-		self.session.set_keyspace('lsflog2')
+		self.session.set_keyspace('lsflog')
 		self.stmt = self.session.prepare('INSERT INTO daemonerrlog(log_type, host_name, log_time, field4, field5, msg) VALUES(?, ?, ?, ?, ?, ?)')
 		self.batch = BatchStatement()
 		batch_cnt = 0
@@ -216,6 +216,7 @@ class errlogInserter():
 		if self.batch_cnt > 0:
 			try:
 				self.session.execute(self.batch)
+				print 'batch insert', self.batch_cnt
 			except Exception, e:
 				print 'execute batch error'
 				print e

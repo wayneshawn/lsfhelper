@@ -1,0 +1,191 @@
+$def with (d)
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <title>pcm</title>
+</head>
+<body>
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="main" style="height:400px"></div>
+    <div id="concrete" style="height:400px;width=100px"></div>
+    <!-- ECharts单文件引入 -->
+    <script src="http://echarts.baidu.com/build/dist/echarts.js"></script>
+    <script type="text/javascript">
+        // 路径配置
+        require.config({
+            paths: {
+                echarts: 'http://echarts.baidu.com/build/dist'
+            }
+        });
+        
+        // 使用
+        require(
+            [
+                'echarts',
+                'echarts/chart/pie', // 使用柱状图就加载bar模块，按需加载
+		'echarts/chart/bar'
+            ],
+            function (ec) {
+                // 基于准备好的dom，初始化echarts图表
+                var myChart = ec.init(document.getElementById('main')); 
+                var Chart2 = ec.init(document.getElementById('concrete')); 
+                
+                option = {
+		    title : {
+			text: 'Job Num Last 7 Day',
+			subtext: 'divide by queue',
+			x:'center'
+		    },
+		    tooltip : {
+			trigger: 'item',
+			formatter: "{a} <br/>{b} : {c} ({d}%)"
+		    },
+		    legend: {
+			orient : 'vertical',
+			x : 'left',
+			//data:$:d.keys()
+			data:$:d['queues']
+		    },
+		    toolbox: {
+			show : true,
+			feature : {
+			    mark : {show: true},
+			    dataView : {show: true, readOnly: false},
+			    magicType : {
+				show: true, 
+				type: ['pie', 'funnel'],
+				option: {
+				    funnel: {
+				        x: '25%',
+				        width: '50%',
+				        funnelAlign: 'left',
+				        max: 1548
+				    }
+				}
+			    },
+			    restore : {show: true},
+			    saveAsImage : {show: true}
+			}
+		    },
+		    
+		    calculable : true,
+		    series : [
+			{
+			    name:'queue',
+			    type:'pie',
+			    radius : '55%',
+			    center: ['50%', '60%'],
+			    
+			    data:[
+				{value:$d['queuenum'][0], name:'$d['queues'][0]', link:'www.baidu.com'},
+				{value:$d['queuenum'][1], name:'$d['queues'][1]'},
+				{value:$d['queuenum'][2], name:'$d['queues'][2]'},
+				{value:$d['queuenum'][3], name:'$d['queues'][3]'},
+				{value:$d['queuenum'][4], name:'$d['queues'][4]'},
+				{value:$d['queuenum'][5], name:'$d['queues'][5]'}
+			    ]
+			}
+		    ]
+		};
+
+        	option2 = {
+		    title : {
+			text: 'JOB_FINISH status',
+			subtext: 'EXIT-32, DONE-64',
+			x:'left'
+		    },
+		    tooltip : {
+			trigger: 'axis',
+			axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+			    type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+			}
+		    },
+		    legend: {
+			data:['DONE', 'EXIT', 'TERM_UNKNOWN', 'TERM_RUNLIMIT', 'TERM_FORCE_OWNER', 'TERM_OWNER', 'TERM_ADMIN', 'TERM_ETERNAL_SIGNAL'],
+			x : 'right'
+		    },
+		    toolbox: {
+			show : true,
+			orient: 'vertical',
+			x: 'right',
+			y: 'center',
+			feature : {
+			    mark : {show: true},
+			    dataView : {show: true, readOnly: false},
+			    magicType : {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+			    restore : {show: true},
+			    saveAsImage : {show: true}
+			}
+		    },
+		    calculable : true,
+		    xAxis : [
+			{
+			    type : 'category',
+			    //data : ['normal','hpc_linux','priority','short','yanning','ycy']
+			    data: $:d['queues']
+			}
+		    ],
+		    yAxis : [
+			{
+			    type : 'value'
+			}
+		    ],
+		    series : [
+			{
+			    name:'DONE',
+			    type:'bar',
+			    stack: 'j64',
+			    data: $d['js64']
+			},
+			{
+			    name:'EXIT',
+			    type:'bar',
+			    stack: 'j32',
+			    data: $d['js32']
+			},
+			{
+			    name:'TERM_UNKNOWN',
+			    type:'bar',
+			    stack: 'term',
+			    data: $d['exit0']
+			},
+			{	
+			    name:'TERM_RUNLIMIT',
+			    type:'bar',
+			    stack: 'term',
+			    data: $d['exit5']
+			},
+			{
+			    name:'TERM_FORCE_OWNER',
+			    type:'bar',
+			    stack: 'term',
+			    data: $d['exit8']
+			},
+			{
+			    name:'TERM_OWNER',
+			    type:'bar',
+			    stack: 'term',
+			    data: $d['exit14']
+			},
+			{
+			    name:'TERM_ADMIN',
+			    type:'bar',
+			    stack: 'term',
+			    data: $d['exit15']
+			},
+			{
+			    name:'TERM_ETERNAL_SIGNAL',
+			    type:'bar',
+			    stack: 'term',
+			    data: $d['exit17']
+			}
+		    ]
+		};
+              
+                // 为echarts对象加载数据 
+                myChart.setOption(option); 
+		Chart2.setOption(option2);
+            }
+        );
+    </script>
+</body>

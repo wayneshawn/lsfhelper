@@ -57,7 +57,7 @@ def insert_err_log(strs, session):
 #	<log_type>.log.<hostname>
 def r_file(input, db):
 	#log_type, none, host_name = tuple(input.split('.'))	
-	t_and_h = input.split('.')[::2]
+	t_and_h = os.path.split(input)[-1].split('.')[::2]
 	p = re.compile(r'(\w+)\s+(\d+)\s([\d:]+)\s(\d+)\s(\d+)\s(\d+)\s8.0\s(.*)')
 	f = open(input, 'r')
 	cnt = 0
@@ -94,33 +94,33 @@ def r_files(files):
 	print rdnum
 	db.close()
 
-def	get_type_files(fdir, ftype): 
+def get_type_files(fdir, ftype): 
 	files = []
 	for f in os.listdir(fdir):
 		if fnmatch.fnmatch(f, ftype):
-			files.append(f)
+			files.append(fdir+'/'+f)
 	return files
 
 if __name__=='__main__':
 	#cluster = Cluster(load_balancing_policy=RoundRobinPolicy())
 
 	t1 = time.time()
-	res_logs = get_type_files('./', 'res.log.*')
-	r_files(res_logs[:100])
-	print time.time()-t1
-
-	'''
-	t1 = time.time()
-	mbd_logs = get_type_files('./', 'mbatchd.log.*')
-	r_files(mbd_logs, session)
+	fdir = '../../daemon_errlog'
+	res_logs = get_type_files(fdir, 'res.log.*')
+	print len(res_logs)
+	r_files(res_logs)
 	print time.time()-t1
 
 	t1 = time.time()
-	mbschd_logs = get_type_files('./', 'mbschd.log.*')
-	r_files(mbschd_logs, session)
+	mbd_logs = get_type_files(fdir, 'mbatchd.log.*')
+	r_files(mbd_logs)
+	print time.time()-t1
+
+	t1 = time.time()
+	mbschd_logs = get_type_files(fdir, 'mbschd.log.*')
+	r_files(mbschd_logs)
 	print time.time()-t1
 	
 
-	sbd_logs = get_type_files('./', 'sbatchd.log.*')
-	r_files(sbd_logs, session)
-	'''
+	sbd_logs = get_type_files(fdir, 'sbatchd.log.*')
+	r_files(sbd_logs)
